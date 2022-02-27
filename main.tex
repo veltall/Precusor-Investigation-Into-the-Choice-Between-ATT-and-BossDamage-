@@ -1,0 +1,154 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue, pdftitle={Precusor Investigation Into the Choice Between ATT\% and BossDamage\%}]{hyperref}
+\usepackage{fancyhdr, lastpage}
+% \pagestyle{fancy}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+
+\title{Precursor Investigation Into the Choice Between ATT\% and BossDamage\%}
+\author{Velt}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+It is conventional wisdom in MapleStory that potential lines ATT\% are superior to all alternatives and the ideal WSE combination is 6-3-0 i.e. 6 ATT\% lines, 3 Boss\% lines and 0 damage\% lines across the three pieces of equipment (Main weapon, sub weapon, and Emblem).  
+This wisdom, however, does not appear to be mathematically correct on some levels; this write-up attempts to examine further and yield an intuitive understanding of the interplay between BossDamage\% and ATT\%.
+\end{abstract}
+
+\vspace{1.5cm}
+
+\section{Introduction}
+
+\subsection{Damage Formula}
+
+Source: \href{https://strategywiki.org/wiki/MapleStory/Formulas#Active_Skills}{StrategyWiki}
+
+\begin{equation} \label{eq:1}
+\text{Damage on Boss} = K \times \left( 1+\frac{\text{ATT\%}}{100} \right) \times \left( 1 + \frac{\text{Boss\%}}{100} \right)
+\end{equation}
+\begin{align*}
+    \text{where } & K \text{ is the rest of the formula including Stats, Final Damage\%, Damage\%, etc.} \\
+                  &  \text{ATT\% is the total amount of +ATT\%,} \\
+                  &  \text{Boss\% is the total amount of +BossDamage\%}
+\end{align*}
+
+\subsection{Setup}
+
+The setup takes into account a typical Reboot player who has some negligible amount of ATT\% from \emph{Hero's Echo}, \emph{Familiar Badge} effect, and \emph{Weapon Soul} effect. Let's call this quantity \textbf{[base ATT]} or $A_b$ symbolically. In most cases, this quantity is small enough to be considered negligible.
+
+Similarly, there is an existing amount of BossDamage\% that cannot be exchanged for ATT\% (e.g. from Gollux set effect, from Weapon's innate stats, etc.) Let's call this quantity \textbf{[base Boss]} or $B_b$ symbolically.
+
+\clearpage
+
+\section{The Algebra}
+
+% \subsection{Scenario 1: Rolling for ATT\%}
+
+% In this scenario we roll WSE potentials purely for ATT\% lines, resulting in a total amount of \textbf{$A$}. This means there is no additional BossDamage\% beyond the base amount. The formula (1) then becomes:
+
+% \begin{align*}
+%     \text{Damage on Boss} & = K \times \left( 1+\frac{A_b+A}{100} \right) \times \left( 1 + \frac{B_b}{100} \right) \\ 
+%                           & = K \times \left[ 1 \times \left( 1 + \frac{B_b}{100} \right) + \frac{A_b}{100} \times \left( 1 + \frac{B_b}{100} \right) + \frac{A}{100} \times \left( 1 + \frac{B_b}{100} \right) \right] 
+% \end{align*}
+
+% \subsection{Scenario 2: Rolling for BossDamage\%}
+
+% In this scenario we roll WSE potentials purely for BossDamage\% lines, resulting in a total amount of \textbf{$B$}. This means there is no additional ATT\% beyond the base amount. The formula (1) then becomes:
+
+% \begin{align*}
+%     \text{Damage on Boss} & = K \times \left( 1+\frac{A_b}{100} \right) \times \left( 1 + \frac{B_b+B}{100} \right) \\ 
+%                           & = K \times \left[ 1 \times \left( 1 + \frac{A_b}{100} \right) + \frac{B_b}{100} \times \left( 1 + \frac{A_b}{100} \right) + \frac{B}{100} \times \left( 1 + \frac{A_b}{100} \right) \right] 
+% \end{align*}
+
+Expanding equation \eqref{eq:1}, we have:
+
+\begin{align*}
+    \text{Damage on Boss} = D & = K \times \left( 1+\frac{A_b+A}{100} \right) \times \left( 1 + \frac{B_b + B}{100} \right) \\ 
+                              & = \frac{K}{10000} \times \left( 100 + A_b + A \right) \times \left( 100 + B_b + B \right) \\
+\end{align*}
+
+Taking a closer look at the quantity of added ATT\%:
+
+\begin{align*} 
+    \frac{\partial}{\partial A} D & = \frac{K}{10000} \times \frac{\partial}{\partial A} (100 + B_b + B) A \\
+                                  & = L \times (100 + B_b + B)
+\end{align*}
+
+Similarly for the quantity of added BossDamage\%:
+
+\begin{align*}
+    \frac{\partial}{\partial B} D & = \frac{K}{10000} \times \frac{\partial}{\partial B} (100 + A_b + A) B \\
+                                  & = L \times (100 + A_b + A)
+\end{align*}
+
+Intuitively, this result makes sense. For every point of ATT\%, the damage goes up by a quantity that is dependent on the existing total amount of BossDamage\% and vice versa, indicative of the multiplicative interplay between these two values.
+
+\section{Opportunity Cost}
+
+However, the choice that the player has to make is not between one point of ATT\% and one point of BossDamage\%. Specifically, each unit of "opportunity cost" is one potential line out of six: three on Main Weapon, and three on Sub Weapon (the Emblem cannot have BossDamage\%). Each of these potential lines can take on a value of:
+
+\begin{enumerate}
+    \item 12\% ATT
+    \item 9\% ATT
+    \item 40\% Boss Damage
+    \item 30\% Boss Damage
+\end{enumerate}
+
+Or, roughly speaking, for every 1 point of ATT\% acquired, 3 points of Boss\% was lost; in other words: each point of ATT\% has a cost value of 3 and each point of Boss\% has a cost valu of 1. Let's name this quantity $C$ for \textbf{[cost]}. We thus obtain the modified versions of the derivatives as:
+
+\begin{equation} \label{eq:2}
+    \frac{\partial}{\partial A} D = L \times (100 + B_b + B) = 3C
+\end{equation}
+
+and
+
+\begin{equation} \label{eq:3}
+    \frac{\partial}{\partial B} D = L \times (100 + A_b + A) = 1C
+\end{equation}
+
+Thus it appears that, all else being equal, the player should always choose \textbf{Boss Damage\%} over \textbf{ATT\%}.
+
+\section{The Breakpoint}
+
+Yet not all else is equal. The base amount of \textbf{ATT\%} \textbf{$A_b$}, for instance, is very small (around 10\% for most players) while the base amount of \textbf{Boss Damage\%} \textbf{$B_b$} is easily much higher (well over 100\% for most players). At which point, then is it worth considering choosing ATT\% over Boss Damage\%?
+
+We simply set the derivatives equal to each other.
+
+\begin{align*}
+    \frac{\partial}{\partial A} D & = \frac{\partial}{\partial B} D \\
+        L \times (100 + B_b + B) & = 3L \times (100 + A_b + A) \\
+        100 + B_b + B & = 300 + 3A_b + 3A \\
+\end{align*}
+
+or
+
+\begin{equation} \label{eq:4}
+    B + B_b = 200 + 3(A+A_b)
+\end{equation}
+
+\subsection{Special Case 1}
+For simplicity's sake, assume $A_b = 0$ and that the player should go all in on one option between \textbf{ATT\%} and \textbf{Boss\%}, since one of them is objectively superior in each given circumstance. In this case, if the player chooses not to invest any potential lines into \textbf{ATT\%}:
+
+\begin{equation}
+    B + B_b = 200
+\end{equation}
+
+then they are free to invest into \textbf{Boss\%} until the total amount reaches 200, at which point the derivatives equalize and \textbf{ATT\%} is now more valuable \textbf{per point}. This value serves as the starting goal for players before further considerations are warranted.
+
+\subsection{Other Considerations}
+For each individual circumstances, the player should input their stats into equation \eqref{eq:4} to find their own combination of \textbf{ATT\%} and \textbf{Boss\%}.
+
+\end{document}
